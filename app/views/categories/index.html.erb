@@ -1,0 +1,64 @@
+<% content_for :title, "Categories - #{@project.name}" %>
+
+<div class="max-w-4xl mx-auto px-4 sm:px-0">
+  <div class="mb-8">
+    <%= link_to @project, class: "text-sm  text-gray-400 hover:text-indigo-500" do %>
+      ← Back to <%= @project.name %>
+    <% end %>
+  </div>
+
+  <div class="sm:flex sm:items-center sm:justify-between mb-6">
+    <div>
+      <h1 class="text-2xl  text-gray-100">Categories</h1>
+      <p class="mt-1 text-sm text-gray-400">Organize your tasks with categories</p>
+    </div>
+    <div class="mt-4 sm:mt-0">
+      <%= link_to new_project_category_path(@project), class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm   text-white bg-blue-600 rounded-lg hover:bg-blue-700" do %>
+        <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        New Category
+      <% end %>
+    </div>
+  </div>
+
+  <% if @categories.any? %>
+    <div class="bg-[#252525] rounded-lg shadow ">
+      <ul class="divide-y divide-gray-200">
+        <% @categories.each do |category| %>
+          <li class="px-4 py-4">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <div class="w-4 h-4 rounded-full mr-3" style="background-color: <%= category.color %>;"></div>
+                <span class="text-sm  text-gray-100"><%= category.name %></span>
+                <span class="ml-2 text-xs text-gray-400">
+                  (<%= pluralize(category.tasks.count, 'task') %>)
+                </span>
+              </div>
+              <div class="flex space-x-3">
+                <%= link_to "Edit", edit_project_category_path(@project, category), class: "text-sm  text-gray-400 hover:text-indigo-500" %>
+                <%= button_to "Delete", project_category_path(@project, category), method: :delete, class: "text-sm  text-red-400 hover:text-red-500", form: { data: { turbo_confirm: "Are you sure?" } } %>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% else %>
+    <div class="bg-[#252525] rounded-lg shadow  text-center py-12">
+      <svg class="mx-auto h-12 w-12 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+      </svg>
+      <h3 class="mt-2 text-sm  text-gray-100">No categories</h3>
+      <p class="mt-1 text-sm text-gray-400">Get started by creating a new category.</p>
+      <div class="mt-6">
+        <%= link_to new_project_category_path(@project), class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm   text-white bg-blue-600 rounded-lg hover:bg-blue-700" do %>
+          <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          New Category
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

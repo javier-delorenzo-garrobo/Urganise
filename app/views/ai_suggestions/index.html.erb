@@ -1,0 +1,69 @@
+<% content_for :title, "AI Suggestions - Urganise" %>
+
+<div class="px-4 sm:px-0">
+  <div class="sm:flex sm:items-center sm:justify-between">
+    <div>
+      <h1 class="text-3xl  text-gray-100">AI Suggestions</h1>
+      <p class="mt-2 text-sm text-gray-400">View your AI-powered task recommendations and insights.</p>
+    </div>
+  </div>
+
+  <% if @suggestions.any? %>
+    <div class="mt-8 space-y-4">
+      <% @suggestions.each do |suggestion| %>
+        <div class="bg-[#252525] rounded-lg shadow  overflow-hidden">
+          <div class="px-4 py-5 sm:p-6">
+            <div class="flex items-start justify-between">
+              <div class="flex-1">
+                <div class="flex items-center">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs  <%= 
+                    case suggestion.suggestion_type
+                    when 'task_breakdown' then 'bg-blue-100 text-blue-800'
+                    when 'priority_recommendation' then 'bg-purple-100 text-purple-800'
+                    when 'time_estimate' then 'bg-emerald-900/30 text-green-200'
+                    else 'bg-[#252525] text-gray-300'
+                    end
+                  %>">
+                    <%= suggestion.suggestion_type.humanize %>
+                  </span>
+                  <span class="ml-3 text-sm text-gray-400">
+                    <%= time_ago_in_words(suggestion.created_at) %> ago
+                  </span>
+                </div>
+                
+                <% if suggestion.task %>
+                  <p class="mt-2 text-sm text-gray-400">
+                    Related to: <%= link_to suggestion.task.title, project_task_path(suggestion.task.project, suggestion.task), class: "text-gray-400 hover:text-indigo-500" %>
+                  </p>
+                <% end %>
+                
+                <div class="mt-4 prose prose-sm max-w-none">
+                  <pre class="whitespace-pre-wrap text-gray-400 bg-[#1a1a1a] p-4 "><%= suggestion.content %></pre>
+                </div>
+              </div>
+              
+              <div class="ml-4">
+                <%= button_to ai_suggestion_path(suggestion), method: :delete, class: "text-gray-500 hover:text-red-400", form: { data: { turbo_confirm: "Are you sure?" } } do %>
+                  <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="mt-8 bg-[#252525] rounded-lg shadow  text-center py-12">
+      <svg class="mx-auto h-12 w-12 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+      </svg>
+      <h3 class="mt-2 text-sm  text-gray-100">No AI suggestions yet</h3>
+      <p class="mt-1 text-sm text-gray-400">AI suggestions will appear here as you use the AI features.</p>
+      <div class="mt-6">
+        <%= link_to "Go to Projects", projects_path, class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm   text-white bg-blue-600 rounded-lg hover:bg-blue-700" %>
+      </div>
+    </div>
+  <% end %>
+</div>

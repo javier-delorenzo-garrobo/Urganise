@@ -1,0 +1,31 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= ENV.fetch("DB_HOST", "localhost") %>
+  username: <%= ENV.fetch("POSTGRES_USER", "urganise") %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD", "password") %>
+
+development:
+  <<: *default
+  database: urganise_development
+
+test:
+  <<: *default
+  database: urganise_test
+
+production:
+  primary: &primary_production
+    <<: *default
+    database: urganise_production
+    username: urganise
+    password: <%= ENV["URGANISE_DATABASE_PASSWORD"] %>
+  cache:
+    <<: *primary_production
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_production
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_production
+    migrations_paths: db/cable_migrate

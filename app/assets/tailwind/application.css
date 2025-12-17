@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  --font-family-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+@layer base {
+  body {
+    @apply bg-[#1a1a1a] text-gray-300;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans tracking-normal text-gray-200;
+  }
+  
+  input, textarea, select {
+    @apply bg-[#2d2d2d] border-gray-600 text-gray-300 placeholder-gray-500 rounded-lg;
+  }
+  
+  input:focus, textarea:focus, select:focus {
+    @apply border-gray-500 ring-1 ring-gray-500;
+  }
+}

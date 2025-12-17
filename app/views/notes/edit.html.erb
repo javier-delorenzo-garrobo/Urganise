@@ -1,0 +1,87 @@
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="mb-8">
+    <h1 class="text-3xl  text-gray-100">✏️ Edit Note</h1>
+    <p class="mt-2 text-sm text-gray-400">Update your note information</p>
+  </div>
+
+  <div class="bg-[#252525] rounded-lg shadow ">
+    <%= form_with(model: @note, class: "p-6") do |form| %>
+      <% if @note.errors.any? %>
+        <div class=" bg-red-900/20 p-4 mb-6">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <div class="ml-3">
+              <h3 class="text-sm  text-red-200">
+                <%= pluralize(@note.errors.count, "error") %> prohibited this note from being saved:
+              </h3>
+              <div class="mt-2 text-sm text-red-700">
+                <ul class="list-disc pl-5 space-y-1">
+                  <% @note.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="space-y-6">
+        <div>
+          <%= form.label :title, class: "block text-sm  text-gray-400 mb-2" %>
+          <%= form.text_field :title, class: "appearance-none block w-full px-3 py-2 border border-gray-700  shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-gray-600 sm:text-sm" %>
+        </div>
+
+        <div>
+          <%= form.label :content, class: "block text-sm  text-gray-400 mb-2" %>
+          <%= form.text_area :content, rows: 8, class: "appearance-none block w-full px-3 py-2 border border-gray-700  shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-gray-600 sm:text-sm" %>
+        </div>
+
+        <div>
+          <%= form.label :project_id, "Project (Optional)", class: "block text-sm  text-gray-400 mb-2" %>
+          <%= form.collection_select :project_id, @projects, :id, :name, { include_blank: "None" }, class: "appearance-none block w-full px-3 py-2 border border-gray-700  shadow-sm focus:outline-none focus:ring-blue-500 focus:border-gray-600 sm:text-sm" %>
+        </div>
+
+        <div>
+          <%= form.label :color, class: "block text-sm  text-gray-400 mb-2" %>
+          <div class="flex space-x-2">
+            <% %w[yellow blue green pink purple orange gray].each do |color| %>
+              <label class="cursor-pointer">
+                <%= form.radio_button :color, color, class: "sr-only peer" %>
+                <div class="w-10 h-10 rounded-full bg-<%= color %>-200 border-2 border-transparent peer-checked:border-<%= color %>-600 peer-checked:ring-2 peer-checked:ring-offset-2 peer-checked:ring-<%= color %>-600 hover:scale-110 transition-transform"></div>
+              </label>
+            <% end %>
+          </div>
+        </div>
+
+        <% if @note.files.attached? %>
+          <div>
+            <label class="block text-sm  text-gray-400 mb-2">Current Attachments</label>
+            <ul class="space-y-2">
+              <% @note.files.each do |file| %>
+                <li class="flex items-center justify-between p-2 bg-[#1a1a1a] rounded">
+                  <span class="text-sm text-gray-400"><%= file.filename %></span>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div>
+          <%= form.label :files, "Add More Attachments (Optional)", class: "block text-sm  text-gray-400 mb-2" %>
+          <%= form.file_field :files, multiple: true, class: "block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file: file:border-0 file:text-sm file: file:bg-indigo-50 file:text-gray-400 hover:file:bg-indigo-100" %>
+          <p class="mt-1 text-xs text-gray-400">PDF, DOC, DOCX, XLS, XLSX, TXT, JPG, PNG, GIF (max 10MB each)</p>
+        </div>
+
+        <div class="flex justify-end space-x-3 pt-4 border-t border-gray-700">
+          <%= link_to "Cancel", notes_path, class: "inline-flex justify-center py-2 px-4 border border-gray-700 shadow-sm text-sm   text-gray-400 bg-[#252525] hover:bg-[#1a1a1a] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+          <%= form.submit "Update Note", class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm   text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

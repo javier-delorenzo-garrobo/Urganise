@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+
+echo "🚀 Starting Urganise Production..."
+
+# Wait for PostgreSQL
+echo "⏳ Waiting for PostgreSQL..."
+until pg_isready -h db -U urganise 2>/dev/null; do
+  sleep 1
+done
+echo "✓ PostgreSQL is ready!"
+
+# Setup database (db:migrate will create if doesn't exist)
+echo "📦 Setting up database..."
+bundle exec rails db:migrate RAILS_ENV=production 2>/dev/null || bundle exec rails db:setup RAILS_ENV=production
+
+# Remove PID
+rm -f tmp/pids/server.pid
+
+echo "✅ Urganise is ready!"
+exec "$@"

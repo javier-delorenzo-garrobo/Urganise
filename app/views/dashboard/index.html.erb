@@ -1,0 +1,225 @@
+<% content_for :title, "Dashboard - Urganise" %>
+
+<div class="px-4 sm:px-0">
+  <div class="sm:flex sm:items-center sm:justify-between">
+    <div>
+      <h1 class="text-3xl  text-gray-100">Dashboard</h1>
+      <p class="mt-2 text-sm text-gray-400">Welcome back! Here's an overview of your tasks and projects.</p>
+    </div>
+    <div class="mt-4 sm:mt-0">
+      <%= link_to new_project_path, class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm   text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" do %>
+        <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        New Project
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="mt-8">
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5">
+      <div class="bg-[#252525] rounded-lg overflow-hidden shadow ">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <svg class="h-6 w-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+              </svg>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm  text-gray-400 truncate">Active Projects</dt>
+                <dd class="text-lg  text-gray-100"><%= @stats[:total_projects] %></dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-[#252525] rounded-lg overflow-hidden shadow ">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <svg class="h-6 w-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm  text-gray-400 truncate">Total Tasks</dt>
+                <dd class="text-lg  text-gray-100"><%= @stats[:total_tasks] %></dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-[#252525] rounded-lg overflow-hidden shadow ">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <svg class="h-6 w-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm  text-gray-400 truncate">Pending</dt>
+                <dd class="text-lg  text-gray-100"><%= @stats[:pending_tasks] %></dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-[#252525] rounded-lg overflow-hidden shadow ">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <svg class="h-6 w-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm  text-gray-400 truncate">Completed</dt>
+                <dd class="text-lg  text-gray-100"><%= @stats[:completed_tasks] %></dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-[#252525] rounded-lg overflow-hidden shadow ">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <svg class="h-6 w-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm  text-gray-400 truncate">Overdue</dt>
+                <dd class="text-lg  text-gray-100"><%= @stats[:overdue_tasks] %></dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <!-- Recent Tasks -->
+    <div class="bg-[#252525] rounded-lg shadow ">
+      <div class="px-4 py-5 sm:p-6">
+        <h2 class="text-lg  text-gray-100 mb-4">Recent Tasks</h2>
+        <% if @recent_tasks.any? %>
+          <ul class="divide-y divide-gray-200">
+            <% @recent_tasks.each do |task| %>
+              <li class="py-3">
+                <%= link_to project_task_path(task.project, task), class: "block hover:bg-[#1a1a1a]  px-2 -mx-2" do %>
+                  <div class="flex items-center justify-between">
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm  text-gray-100 truncate"><%= task.title %></p>
+                      <p class="text-sm text-gray-400">
+                        <%= task.project.name %>
+                        <% if task.category %>
+                          <span class="inline-flex items-center px-2 py-0.5 rounded text-xs " style="background-color: <%= task.category.color %>20; color: <%= task.category.color %>;">
+                            <%= task.category.name %>
+                          </span>
+                        <% end %>
+                      </p>
+                    </div>
+                    <div class="ml-2 flex-shrink-0">
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs  <%= task.status == 'completed' ? 'bg-emerald-900/30 text-green-200' : task.status == 'in_progress' ? 'bg-blue-100 text-blue-800' : 'bg-[#252525] rounded-lg text-gray-300' %>">
+                        <%= task.status.humanize %>
+                      </span>
+                    </div>
+                  </div>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-sm text-gray-400">No tasks yet. Create a project and start adding tasks!</p>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Active Projects -->
+    <div class="bg-[#252525] rounded-lg shadow ">
+      <div class="px-4 py-5 sm:p-6">
+        <h2 class="text-lg  text-gray-100 mb-4">Active Projects</h2>
+        <% if @projects.any? %>
+          <ul class="divide-y divide-gray-200">
+            <% @projects.each do |project| %>
+              <li class="py-3">
+                <%= link_to project_path(project), class: "block hover:bg-[#1a1a1a]  px-2 -mx-2" do %>
+                  <div class="flex items-center justify-between">
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm  text-gray-100 truncate"><%= project.name %></p>
+                      <p class="text-sm text-gray-400">
+                        <%= pluralize(project.tasks.count, 'task') %>
+                      </p>
+                    </div>
+                  </div>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+          <div class="mt-4">
+            <%= link_to "View all projects →", projects_path, class: "text-sm  text-gray-400 hover:text-indigo-500" %>
+          </div>
+        <% else %>
+          <p class="text-sm text-gray-400">No projects yet.</p>
+          <%= link_to "Create your first project", new_project_path, class: "mt-3 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4   text-gray-400 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <% if @overdue_tasks.any? || @due_soon_tasks.any? %>
+    <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <!-- Overdue Tasks -->
+      <% if @overdue_tasks.any? %>
+        <div class="bg-red-900/20 shadow  border-l-4 border-red-400">
+          <div class="px-4 py-5 sm:p-6">
+            <h2 class="text-lg  text-red-900 mb-4">Overdue Tasks</h2>
+            <ul class="divide-y divide-red-200">
+              <% @overdue_tasks.each do |task| %>
+                <li class="py-3">
+                  <%= link_to project_task_path(task.project, task), class: "block hover:bg-rose-900/30  px-2 -mx-2" do %>
+                    <p class="text-sm  text-red-900"><%= task.title %></p>
+                    <p class="text-sm text-red-700">Due: <%= task.due_date.strftime("%b %d, %Y") %></p>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Due Soon -->
+      <% if @due_soon_tasks.any? %>
+        <div class="bg-yellow-50 shadow  border-l-4 border-yellow-400">
+          <div class="px-4 py-5 sm:p-6">
+            <h2 class="text-lg  text-yellow-900 mb-4">Due Soon</h2>
+            <ul class="divide-y divide-yellow-200">
+              <% @due_soon_tasks.each do |task| %>
+                <li class="py-3">
+                  <%= link_to project_task_path(task.project, task), class: "block hover:bg-yellow-100  px-2 -mx-2" do %>
+                    <p class="text-sm  text-yellow-900"><%= task.title %></p>
+                    <p class="text-sm text-yellow-700">Due: <%= task.due_date.strftime("%b %d, %Y") %></p>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

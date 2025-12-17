@@ -1,0 +1,47 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: urganise
+      POSTGRES_PASSWORD: urganise_prod_2024_secure_pass
+      POSTGRES_DB: urganise_production
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - urganise-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U urganise"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      RAILS_ENV: production
+      DATABASE_URL: postgres://urganise:urganise_prod_2024_secure_pass@db:5432/urganise_production
+      DB_HOST: db
+      POSTGRES_USER: urganise
+      POSTGRES_PASSWORD: urganise_prod_2024_secure_pass
+      POSTGRES_DB: urganise_production
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      RAILS_SERVE_STATIC_FILES: "true"
+      RAILS_LOG_TO_STDOUT: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - urganise-network
+    restart: unless-stopped
+
+networks:
+  urganise-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

@@ -1,0 +1,118 @@
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="bg-[#252525] rounded-lg shadow  overflow-hidden">
+    <div class="p-6 border-l-4" style="border-color: <%= @calendar_event.color %>">
+      <div class="flex justify-between items-start mb-4">
+        <div class="flex items-center space-x-4">
+          <div class="flex-shrink-0 h-12 w-12  flex items-center justify-center" style="background-color: <%= @calendar_event.color %>">
+            <% case @calendar_event.event_type
+               when 'meeting' %>
+              <svg class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            <% when 'deadline' %>
+              <svg class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            <% when 'task' %>
+              <svg class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+              </svg>
+            <% else %>
+              <svg class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            <% end %>
+          </div>
+          <div>
+            <h1 class="text-3xl  text-gray-100"><%= @calendar_event.title %></h1>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs  bg-indigo-100 text-indigo-800 capitalize">
+              <%= @calendar_event.event_type %>
+            </span>
+          </div>
+        </div>
+        <div class="flex space-x-2">
+          <%= link_to edit_calendar_event_path(@calendar_event), class: "inline-flex items-center px-3 py-2 border border-gray-700 shadow-sm text-sm leading-4   text-gray-400 bg-[#252525] hover:bg-[#1a1a1a]" do %>
+            <svg class="-ml-0.5 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+            Edit
+          <% end %>
+          <%= button_to calendar_event_path(@calendar_event), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4   text-white bg-red-600 hover:bg-red-700 rounded-lg" do %>
+            <svg class="-ml-0.5 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+            Delete
+          <% end %>
+        </div>
+      </div>
+
+      <% if @calendar_event.project %>
+        <div class="mb-4">
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-sm  bg-[#252525] rounded-lg text-gray-300">
+            📁 <%= @calendar_event.project.name %>
+          </span>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="px-6 py-4 bg-[#1a1a1a] border-t border-gray-700">
+      <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+        <div>
+          <dt class="text-sm  text-gray-400">Start Time</dt>
+          <dd class="mt-1 text-sm text-gray-100">
+            <%= @calendar_event.start_time.strftime("%B %d, %Y at %I:%M %p") %>
+          </dd>
+        </div>
+        <div>
+          <dt class="text-sm  text-gray-400">End Time</dt>
+          <dd class="mt-1 text-sm text-gray-100">
+            <%= @calendar_event.end_time.strftime("%B %d, %Y at %I:%M %p") %>
+          </dd>
+        </div>
+        <div>
+          <dt class="text-sm  text-gray-400">Duration</dt>
+          <dd class="mt-1 text-sm text-gray-100">
+            <%= @calendar_event.duration_minutes %> minutes
+          </dd>
+        </div>
+        <% if @calendar_event.location.present? %>
+          <div>
+            <dt class="text-sm  text-gray-400">Location</dt>
+            <dd class="mt-1 text-sm text-gray-100">
+              <%= @calendar_event.location %>
+            </dd>
+          </div>
+        <% end %>
+        <% if @calendar_event.reminder_minutes.present? %>
+          <div>
+            <dt class="text-sm  text-gray-400">Reminder</dt>
+            <dd class="mt-1 text-sm text-gray-100">
+              <%= @calendar_event.reminder_minutes %> minutes before
+            </dd>
+          </div>
+        <% end %>
+        <% if @calendar_event.all_day %>
+          <div>
+            <dt class="text-sm  text-gray-400">All Day</dt>
+            <dd class="mt-1 text-sm text-gray-100">Yes</dd>
+          </div>
+        <% end %>
+      </dl>
+    </div>
+
+    <% if @calendar_event.description.present? %>
+      <div class="px-6 py-4">
+        <h3 class="text-lg  text-gray-100 mb-2">Description</h3>
+        <div class="prose max-w-none">
+          <%= simple_format(@calendar_event.description, class: "text-gray-400") %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="px-6 py-4 bg-[#1a1a1a] border-t border-gray-700">
+      <%= link_to calendar_events_path, class: "text-sm text-gray-400 hover:text-indigo-900" do %>
+        ← Back to Calendar
+      <% end %>
+    </div>
+  </div>
+</div>

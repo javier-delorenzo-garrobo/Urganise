@@ -1,0 +1,31 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  project: one
+  title: MyString
+  description: MyText
+  start_time: 2025-12-17 21:38:55
+  end_time: 2025-12-17 21:38:55
+  all_day: false
+  event_type: MyString
+  color: MyString
+  location: MyString
+  attendees: 
+  reminder_minutes: 1
+  recurrence_rule: MyString
+
+two:
+  user: two
+  project: two
+  title: MyString
+  description: MyText
+  start_time: 2025-12-17 21:38:55
+  end_time: 2025-12-17 21:38:55
+  all_day: false
+  event_type: MyString
+  color: MyString
+  location: MyString
+  attendees: 
+  reminder_minutes: 1
+  recurrence_rule: MyString

@@ -1,0 +1,103 @@
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="bg-[#252525] rounded-lg shadow  overflow-hidden">
+    <% color_class = case @note.color
+                     when 'yellow' then 'bg-yellow-50 border-yellow-400'
+                     when 'blue' then 'bg-blue-50 border-blue-400'
+                     when 'green' then 'bg-green-900/20 border-green-400'
+                     when 'pink' then 'bg-pink-50 border-pink-400'
+                     when 'purple' then 'bg-purple-50 border-purple-400'
+                     when 'orange' then 'bg-orange-50 border-orange-400'
+                     else 'bg-[#1a1a1a] border-gray-600'
+                     end %>
+    <div class="<%= color_class %> border-l-4 p-6">
+      <div class="flex justify-between items-start mb-4">
+        <h1 class="text-3xl  text-gray-100"><%= @note.title %></h1>
+        <div class="flex space-x-2">
+          <%= link_to edit_note_path(@note), class: "inline-flex items-center px-3 py-2 border border-gray-700 shadow-sm text-sm leading-4   text-gray-400 bg-[#252525] hover:bg-[#1a1a1a] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" do %>
+            <svg class="-ml-0.5 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+            Edit
+          <% end %>
+          <%= button_to note_path(@note), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4   text-white bg-red-600 hover:bg-red-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" do %>
+            <svg class="-ml-0.5 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+            Delete
+          <% end %>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-4 text-sm text-gray-400 mb-4">
+        <span>Created <%= time_ago_in_words(@note.created_at) %> ago</span>
+        <% if @note.updated_at != @note.created_at %>
+          <span>• Updated <%= time_ago_in_words(@note.updated_at) %> ago</span>
+        <% end %>
+      </div>
+
+      <% if @note.project %>
+        <div class="mb-4">
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-sm  bg-[#252525] rounded-lg text-gray-300">
+            📁 <%= @note.project.name %>
+          </span>
+        </div>
+      <% end %>
+
+      <% if @note.tags.present? %>
+        <div class="mb-4 flex flex-wrap gap-2">
+          <% @note.tags.each do |tag| %>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm  bg-indigo-100 text-indigo-800">
+              #<%= tag %>
+            </span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="p-6">
+      <div class="prose max-w-none">
+        <%= simple_format(@note.content, class: "text-gray-400") %>
+      </div>
+
+      <% if @note.files.attached? %>
+        <div class="mt-8 pt-6 border-t border-gray-700">
+          <h3 class="text-lg  text-gray-100 mb-4">Attachments</h3>
+          <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <% @note.files.each do |file| %>
+              <li class="col-span-1 flex  shadow-sm">
+                <div class="flex-shrink-0 flex items-center justify-center w-16 bg-blue-600 text-white text-sm  rounded-l-md">
+                  <% if file.content_type.start_with?('image/') %>
+                    🖼️
+                  <% elsif file.content_type == 'application/pdf' %>
+                    📄
+                  <% else %>
+                    📎
+                  <% end %>
+                </div>
+                <div class="flex-1 flex items-center justify-between border-t border-r border-b border-gray-700 bg-[#252525] rounded-lg rounded-r-md truncate">
+                  <div class="flex-1 px-4 py-2 text-sm truncate">
+                    <span class="text-gray-100  hover:text-gray-400">
+                      <%= file.filename %>
+                    </span>
+                    <p class="text-gray-400"><%= number_to_human_size(file.byte_size) %></p>
+                  </div>
+                  <%= link_to rails_blob_path(file, disposition: "attachment"), class: "flex-shrink-0 pr-2" do %>
+                    <svg class="h-5 w-5 text-gray-500 hover:text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  <% end %>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="px-6 py-4 bg-[#1a1a1a] border-t border-gray-700">
+      <%= link_to notes_path, class: "text-sm text-gray-400 hover:text-indigo-900" do %>
+        ← Back to Notes
+      <% end %>
+    </div>
+  </div>
+</div>

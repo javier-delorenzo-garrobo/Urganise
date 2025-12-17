@@ -1,0 +1,11 @@
+{
+  "name": "urganise",
+  "version": "1.0.0",
+  "description": "Organize your life with Urganise - A powerful task and project management application",
+  "scripts": {
+    "build": "bundle install && bundle exec rails assets:precompile && bundle exec rails db:migrate"
+  },
+  "keywords": ["rails", "task-management", "productivity"],
+  "author": "Urganise Team",
+  "license": "MIT"
+}

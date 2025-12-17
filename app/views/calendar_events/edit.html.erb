@@ -1,0 +1,72 @@
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="mb-8">
+    <h1 class="text-3xl  text-gray-100">✏️ Edit Calendar Event</h1>
+    <p class="mt-2 text-sm text-gray-400">Update event information</p>
+  </div>
+
+  <div class="bg-[#252525] rounded-lg shadow ">
+    <%= form_with(model: @calendar_event, class: "p-6") do |form| %>
+      <div class="space-y-6">
+        <div>
+          <%= form.label :title, class: "block text-sm  text-gray-400 mb-2" %>
+          <%= form.text_field :title, class: "appearance-none block w-full px-3 py-2 border border-gray-700  shadow-sm focus:outline-none focus:ring-blue-500 focus:border-gray-600 sm:text-sm" %>
+        </div>
+
+        <div>
+          <%= form.label :description, class: "block text-sm  text-gray-400 mb-2" %>
+          <%= form.text_area :description, rows: 4, class: "appearance-none block w-full px-3 py-2 border border-gray-700  shadow-sm focus:outline-none focus:ring-blue-500 focus:border-gray-600 sm:text-sm" %>
+        </div>
+
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div>
+            <%= form.label :start_time, class: "block text-sm  text-gray-400 mb-2" %>
+            <%= form.datetime_field :start_time, class: "appearance-none block w-full px-3 py-2 border border-gray-700  shadow-sm focus:outline-none focus:ring-blue-500 focus:border-gray-600 sm:text-sm" %>
+          </div>
+
+          <div>
+            <%= form.label :end_time, class: "block text-sm  text-gray-400 mb-2" %>
+            <%= form.datetime_field :end_time, class: "appearance-none block w-full px-3 py-2 border border-gray-700  shadow-sm focus:outline-none focus:ring-blue-500 focus:border-gray-600 sm:text-sm" %>
+          </div>
+        </div>
+
+        <div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <%= form.check_box :all_day, class: "sr-only peer" %>
+            <div class="w-11 h-6 bg-blue-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[#252525] rounded-lg after:border-gray-700 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+            <span class="ml-3 text-sm  text-gray-400">All day event</span>
+          </label>
+        </div>
+
+        <div>
+          <%= form.label :event_type, class: "block text-sm  text-gray-400 mb-2" %>
+          <%= form.select :event_type, [['Meeting', 'meeting'], ['Deadline', 'deadline'], ['Task', 'task'], ['Event', 'event'], ['Reminder', 'reminder']], {}, class: "appearance-none block w-full px-3 py-2 border border-gray-700  shadow-sm focus:outline-none focus:ring-blue-500 focus:border-gray-600 sm:text-sm" %>
+        </div>
+
+        <div>
+          <%= form.label :location, "Location (Optional)", class: "block text-sm  text-gray-400 mb-2" %>
+          <%= form.text_field :location, class: "appearance-none block w-full px-3 py-2 border border-gray-700  shadow-sm focus:outline-none focus:ring-blue-500 focus:border-gray-600 sm:text-sm" %>
+        </div>
+
+        <div>
+          <%= form.label :project_id, "Project (Optional)", class: "block text-sm  text-gray-400 mb-2" %>
+          <%= form.collection_select :project_id, current_user.projects.active, :id, :name, { include_blank: "None" }, class: "appearance-none block w-full px-3 py-2 border border-gray-700  shadow-sm focus:outline-none focus:ring-blue-500 focus:border-gray-600 sm:text-sm" %>
+        </div>
+
+        <div>
+          <%= form.label :color, class: "block text-sm  text-gray-400 mb-2" %>
+          <%= form.color_field :color, class: "h-10 w-20 border border-gray-700 " %>
+        </div>
+
+        <div>
+          <%= form.label :reminder_minutes, "Reminder (minutes before)", class: "block text-sm  text-gray-400 mb-2" %>
+          <%= form.number_field :reminder_minutes, class: "appearance-none block w-full px-3 py-2 border border-gray-700  shadow-sm focus:outline-none focus:ring-blue-500 focus:border-gray-600 sm:text-sm" %>
+        </div>
+
+        <div class="flex justify-end space-x-3 pt-4 border-t border-gray-700">
+          <%= link_to "Cancel", calendar_events_path, class: "inline-flex justify-center py-2 px-4 border border-gray-700 shadow-sm text-sm   text-gray-400 bg-[#252525] hover:bg-[#1a1a1a] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+          <%= form.submit "Update Event", class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm   text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

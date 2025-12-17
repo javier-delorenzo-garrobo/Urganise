@@ -1,0 +1,102 @@
+<% content_for :title, "Projects - Urganise" %>
+
+<div class="px-4 sm:px-0">
+  <div class="sm:flex sm:items-center sm:justify-between">
+    <div>
+      <h1 class="text-3xl  text-gray-100">Projects</h1>
+      <p class="mt-2 text-sm text-gray-400">Manage your projects and tasks efficiently.</p>
+    </div>
+    <div class="mt-4 sm:mt-0">
+      <%= link_to new_project_path, class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm   text-white bg-blue-600 rounded-lg hover:bg-blue-700" do %>
+        <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        New Project
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Active Projects -->
+  <div class="mt-8">
+    <h2 class="text-lg  text-gray-100 mb-4">Active Projects</h2>
+    <% if @projects.any? %>
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <% @projects.each do |project| %>
+          <div class="bg-[#252525] rounded-lg overflow-hidden shadow  hover:shadow-md transition-shadow">
+            <%= link_to project_path(project), class: "block" do %>
+              <div class="px-4 py-5 sm:p-6">
+                <h3 class="text-lg  text-gray-100 mb-2"><%= project.name %></h3>
+                <% if project.description.present? %>
+                  <p class="text-sm text-gray-400 mb-4 line-clamp-2"><%= project.description %></p>
+                <% end %>
+                
+                <div class="flex items-center justify-between text-sm text-gray-400">
+                  <div class="flex items-center">
+                    <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                    <%= pluralize(project.tasks.count, 'task') %>
+                  </div>
+                  <div>
+                    <span class="text-xs text-gray-500"><%= project.created_at.strftime("%b %d, %Y") %></span>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+            
+            <div class="bg-[#1a1a1a] px-4 py-3 sm:px-6 flex justify-end space-x-3">
+              <%= link_to "View", project_path(project), class: "text-sm  text-gray-400 hover:text-indigo-500" %>
+              <%= link_to "Edit", edit_project_path(project), class: "text-sm  text-gray-400 hover:text-gray-400" %>
+              <%= button_to "Archive", archive_project_path(project), method: :patch, class: "text-sm  text-gray-400 hover:text-gray-400", form: { data: { turbo_confirm: "Are you sure?" } } %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center py-12 bg-[#252525] rounded-lg  shadow">
+        <svg class="mx-auto h-12 w-12 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+        </svg>
+        <h3 class="mt-2 text-sm  text-gray-100">No projects</h3>
+        <p class="mt-1 text-sm text-gray-400">Get started by creating a new project.</p>
+        <div class="mt-6">
+          <%= link_to new_project_path, class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm   text-white bg-blue-600 rounded-lg hover:bg-blue-700" do %>
+            <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            New Project
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Archived Projects -->
+  <% if @archived_projects.any? %>
+    <div class="mt-12">
+      <h2 class="text-lg  text-gray-100 mb-4">Archived Projects</h2>
+      <div class="bg-[#252525] rounded-lg shadow overflow-hidden sm:">
+        <ul class="divide-y divide-gray-200">
+          <% @archived_projects.each do |project| %>
+            <li class="px-4 py-4 sm:px-6">
+              <div class="flex items-center justify-between">
+                <div class="flex-1 min-w-0">
+                  <%= link_to project_path(project), class: "block" do %>
+                    <p class="text-sm  text-gray-100 truncate"><%= project.name %></p>
+                    <p class="text-sm text-gray-400">
+                      <%= pluralize(project.tasks.count, 'task') %> • Archived <%= time_ago_in_words(project.updated_at) %> ago
+                    </p>
+                  <% end %>
+                </div>
+                <div class="ml-4 flex space-x-3">
+                  <%= button_to "Restore", unarchive_project_path(project), method: :patch, class: "text-sm  text-gray-400 hover:text-indigo-500" %>
+                  <%= button_to "Delete", project_path(project), method: :delete, class: "text-sm  text-red-400 hover:text-red-500", form: { data: { turbo_confirm: "Are you sure? This will delete all tasks in this project." } } %>
+                </div>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+</div>

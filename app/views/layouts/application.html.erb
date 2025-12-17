@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html class="h-full bg-[#1a1a1a]">
+  <head>
+    <title><%= content_for(:title) || "Urganise" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Urganise">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="h-full flex flex-col font-sans text-gray-300 antialiased">
+    <!-- Navbar -->
+    <nav class="bg-[#252525] rounded-lg border-b border-gray-700">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex">
+            <div class="flex-shrink-0 flex items-center">
+              <%= link_to root_path, class: "text-2xl font-bold" do %>
+                <span class="text-blue-500">U</span><span class="text-gray-200">rganise</span>
+              <% end %>
+            </div>
+            <% if user_signed_in? %>
+              <div class="hidden md:ml-8 md:flex md:space-x-1">
+                <%= link_to "Dashboard", dashboard_path, class: "inline-flex items-center px-3 pt-1 text-sm #{current_page?(dashboard_path) ? 'text-white' : 'text-gray-400 hover:text-white transition-colors duration-150'}" %>
+                <%= link_to "Projects", projects_path, class: "inline-flex items-center px-3 pt-1 text-sm #{current_page?(projects_path) ? 'text-white' : 'text-gray-400 hover:text-white transition-colors duration-150'}" %>
+                <%= link_to "Notes", notes_path, class: "inline-flex items-center px-3 pt-1 text-sm #{current_page?(notes_path) ? 'text-white' : 'text-gray-400 hover:text-white transition-colors duration-150'}" %>
+                <%= link_to "Calendar", calendar_events_path, class: "inline-flex items-center px-3 pt-1 text-sm #{current_page?(calendar_events_path) ? 'text-white' : 'text-gray-400 hover:text-white transition-colors duration-150'}" %>
+                <%= link_to "AI Suggestions", ai_suggestions_path, class: "inline-flex items-center px-3 pt-1 text-sm #{current_page?(ai_suggestions_path) ? 'text-white' : 'text-gray-400 hover:text-white transition-colors duration-150'}" %>
+              </div>
+            <% end %>
+          </div>
+          <div class="flex items-center">
+            <% if user_signed_in? %>
+              <div class="hidden md:ml-4 md:flex md:items-center">
+                <span class="text-sm text-gray-400 mr-4"><%= current_user.email %></span>
+                <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "text-sm text-gray-400 hover:text-white transition-colors duration-150" %>
+              </div>
+            <% else %>
+              <div class="hidden md:ml-4 md:flex md:items-center space-x-4">
+                <%= link_to "Sign in", new_user_session_path, class: "text-sm text-gray-400 hover:text-white transition-colors duration-150" %>
+                <%= link_to "Sign up", new_user_registration_path, class: "inline-flex items-center px-4 py-2 rounded-md text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors duration-150" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+      <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <% if notice %>
+          <div class="mb-4 rounded-lg bg-green-900/20 border border-green-800/50 p-4">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm text-green-200"><%= notice %></p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if alert %>
+          <div class="mb-4 rounded-lg bg-red-900/20 border border-red-800/50 p-4">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm text-red-200"><%= alert %></p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <%= yield %>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#252525] rounded-lg border-t border-gray-700 mt-auto">
+      <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <p class="text-center text-sm text-gray-500">&copy; <%= Time.current.year %> Urganise. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>
